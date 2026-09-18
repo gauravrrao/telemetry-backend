@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // url      = env("DATABASE_URL")
+}
+
+model TelemetryEvent {
+  id           BigInt   @id @default(autoincrement())
+  deviceId     String   @map("device_id")
+  timestamp    BigInt
+  lat          Float
+  lon          Float
+  speedKmph    Float    @map("speed_kmph")
+  accelX       Float    @map("accel_x")
+  accelY       Float    @map("accel_y")
+  accelZ       Float    @map("accel_z")
+  gyroX        Float    @map("gyro_x")
+  gyroY        Float    @map("gyro_y")
+  gyroZ        Float    @map("gyro_z")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  // Composite uniqueness: one event per (device, timestamp)
+  @@unique([deviceId, timestamp], name: "device_ts_unique")
+  // Time-range query index per device
+  @@index([deviceId, timestamp])
+  @@map("telemetry_events")
+}

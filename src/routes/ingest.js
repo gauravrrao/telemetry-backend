@@ -68,7 +68,6 @@ router.post("/ingest", async (req, res) => {
 
       accepted += 1;
     } catch (error) {
-      // Prisma P2002 means a unique constraint was violated.
       if (error?.code === "P2002") {
         duplicateIndexes.push(index);
         continue;

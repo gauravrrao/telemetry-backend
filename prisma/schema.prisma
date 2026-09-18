@@ -22,9 +22,8 @@ model TelemetryEvent {
   gyroZ        Float    @map("gyro_z")
   createdAt    DateTime @default(now()) @map("created_at")
 
-  // Composite uniqueness: one event per (device, timestamp)
+
   @@unique([deviceId, timestamp], name: "device_ts_unique")
-  // Time-range query index per device
   @@index([deviceId, timestamp])
   @@map("telemetry_events")
 }
